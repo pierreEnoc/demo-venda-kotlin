@@ -11,10 +11,6 @@ class PromocaoController {
     @Autowired
     lateinit var promocoes: ConcurrentHashMap<Long, Promocao>
     
-    @RequestMapping(value = ["/sayHelo"], method = arrayOf(RequestMethod.GET))
-    fun sayHello(): String {
-        return  "Bem vindo o kotlin com spring boot"
-    }
     @RequestMapping(value = ["/promocoes/{id}"], method = arrayOf(RequestMethod.GET))
     fun getGetId(@PathVariable id:Long) = promocoes[id]
     
@@ -30,6 +26,8 @@ class PromocaoController {
     fun update(id: Long, @RequestBody promocao: Promocao){
         promocoes.remove(id)
         promocoes[id] = promocao
-        
     }
+    @RequestMapping(value = ["/promocoes"], method = arrayOf(RequestMethod.GET))
+    fun getAll()=
+            promocoes.entries
     }

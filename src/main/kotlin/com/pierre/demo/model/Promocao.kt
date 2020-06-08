@@ -5,6 +5,6 @@ data class Promocao (
         val descricao: String,
         val local: String,
         val isAllInclusive: Boolean,
-        val qQtDias: Int,
+        val QtDias: Int,
         val preco: Double
 )

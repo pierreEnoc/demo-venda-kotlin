@@ -1,10 +1,9 @@
 package com.pierre.demo.controller
 import com.pierre.demo.model.Promocao
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
+import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.function.RequestPredicates.POST
 import java.util.concurrent.ConcurrentHashMap
 
 @RestController
@@ -17,6 +16,14 @@ class PromocaoController {
         return  "Bem vindo o kotlin com spring boot"
     }
     @RequestMapping(value = ["/promocoes/{id}"], method = arrayOf(RequestMethod.GET))
-    fun getPromocao(@PathVariable id:Long) = promocoes[id]
+    fun getGetId(@PathVariable id:Long) = promocoes[id]
     
+    @RequestMapping(value = ["/promocoes"], method= arrayOf(RequestMethod.POST))
+    private fun create(@RequestBody promocao: Promocao) {
+        promocoes[promocao.id] = promocao
+    }
+    @RequestMapping(value = ["/promocoes/{id}"], method = arrayOf(RequestMethod.DELETE))
+    fun delete(@PathVariable id: Long){
+        promocoes.remove(id)
+    }
     }

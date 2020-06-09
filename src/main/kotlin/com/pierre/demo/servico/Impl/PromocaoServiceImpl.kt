@@ -2,8 +2,11 @@ package com.pierre.demo.servico.Impl
 
 import com.pierre.demo.model.Promocao
 import com.pierre.demo.servico.PromocaoService
+import org.springframework.context.annotation.Bean
+import org.springframework.stereotype.Component
 import java.util.concurrent.ConcurrentHashMap
 
+@Component
 class PromocaoServiceImpl : PromocaoService {
     companion object {
         val initialPromocoes = arrayOf(
@@ -14,8 +17,9 @@ class PromocaoServiceImpl : PromocaoService {
         
         )
     }
+    
     var promocoes  =
-            ConcurrentHashMap<Long, Promocao>(initialPromocoes.associateBy (Promocao::id))
+            ConcurrentHashMap<Long,Promocao>(initialPromocoes.associateBy(Promocao::id))
     
     override fun create(promocao: Promocao) {
         promocoes[promocao.id] = promocao
@@ -32,12 +36,12 @@ class PromocaoServiceImpl : PromocaoService {
     
     override fun update(id: Long, promocao: Promocao) {
         delete(id)
-        promocoes[id]= promocao
+        create(promocao)
     }
     
     override fun searchByLocal(local: String): List<Promocao> =
-        promocoes.filter {
-            it.value.local.contains(local, true)
-        }.map(Map.Entry<Long, Promocao>::value).toList()
+            promocoes.filter {
+                it.value.local.contains(local, true)
+            }.map (Map.Entry<Long,Promocao>::value).toList()
     }
     

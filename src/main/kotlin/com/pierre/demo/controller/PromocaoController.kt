@@ -1,5 +1,6 @@
 package com.pierre.demo.controller
 import com.pierre.demo.exception.PromocaoNotFoundException
+import com.pierre.demo.model.ErrorMessage
 import com.pierre.demo.model.Promocao
 import com.pierre.demo.model.ResponseJSON
 import com.pierre.demo.servico.PromocaoService
@@ -16,9 +17,13 @@ class PromocaoController {
     lateinit var promocaoService: PromocaoService
     
     @GetMapping("/{id}")
-    fun getGetId(@PathVariable id:Long) : ResponseEntity<Promocao?> {
-        var promocao = this.promocaoService.getById(id)  ?:
-             throw  PromocaoNotFoundException("promocao ${id} nao localizado")
+    fun getGetId(@PathVariable id:Long) : ResponseEntity<Any> {
+        var promocao = this.promocaoService.getById(id)
+           return  if (promocao != null)
+               return ResponseEntity(promocao,HttpStatus.OK)
+        else
+               return ResponseEntity(ErrorMessage("Promocao nao localizada","promocao ${id} nao localizada"),HttpStatus.NOT_FOUND)
+        
         return ResponseEntity(promocao, HttpStatus.OK)
     }
     

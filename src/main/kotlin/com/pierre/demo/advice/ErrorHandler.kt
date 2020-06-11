@@ -1,5 +1,6 @@
 package com.pierre.demo.advice
 
+import com.pierre.demo.exception.PromocaoNotFoundException
 import com.pierre.demo.model.ErrorMessage
 import org.springframework.boot.json.JsonParseException
 import org.springframework.http.HttpStatus
@@ -16,6 +17,11 @@ class ErrorHandler {
     fun JsonParseExceptionHandler(servletRequest: HttpServletRequest, servletRespons: HttpServletResponse, exception: Exception):
             ResponseEntity<ErrorMessage> {
             return ResponseEntity(ErrorMessage("JSON ERROR", exception.message ?:"Invalid Json"),HttpStatus.BAD_REQUEST)
+    }
+    @ExceptionHandler(PromocaoNotFoundException::class)
+    fun PromocaoNotFoundExceptionHandler(servletRequest: HttpServletRequest, servletRespons: HttpServletResponse,
+                                         exception: Exception): ResponseEntity<ErrorMessage>{
+        return ResponseEntity(ErrorMessage("Promocao nao localizada", exception.message !!),HttpStatus.NOT_FOUND)
         
     }
 }
